@@ -1,0 +1,23 @@
+{
+    "platform": "ios",
+    "common": [
+        {
+            "runs-on": ["macos-latest"],
+            "checkout": {
+                "path": "./"
+            }
+        }
+    ],
+    "build": [
+        {
+            "name": "Pod Lib Lint",
+            "type": "fastlane",
+            "fastlane": {
+                "lane": "testFastlane",
+                "working_repo": "./",
+                "fastlane_repo": "awasthi027/iosBuildScripts"
+            }
+        }
+    ]
+}
+
