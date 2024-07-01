@@ -1,0 +1,35 @@
+{
+    "platform": "ios",
+    "common": [
+        {
+            "runs-on": ["macos-latest"],
+            "checkout": {
+                "path": "./"
+            }
+        }
+    ],
+    "build": [
+        {
+            "name": "Test Lane",
+            "type": "fastlane",
+            "disabled": false,
+            "fastlane": {
+                "lane": "printMessageLane",
+                "working_repo": "./",
+                "fastlane_repo": "awasthi027/iosBuildScripts"
+            }
+        },
+          {
+            "name": "Script With TestLane",
+            "type": "script",
+            "disabled": false,
+            "fastlane": {
+                "lane": "readMessagLane",
+                "working_repo": "./",
+                "fastlane_repo": "awasthi027/iosBuildScripts",
+                "pre_script": "./.github/scripts/pre_script.sh"
+            }
+        }
+    ]
+}
+

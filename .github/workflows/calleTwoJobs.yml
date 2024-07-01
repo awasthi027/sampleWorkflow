@@ -1,4 +1,4 @@
-name: CI - With Fastlane
+name: Fastlane With Tow Jobs
 
 env:
     GITHUB_TOKEN: ${{secrets.PAT_GITHUB}}
@@ -13,13 +13,13 @@ permissions:
 
 on:
   workflow_dispatch:
-
+    
 jobs:
   build-iOS: 
      name: "Buidling iOS source code"
-     uses: ./.github/workflows/readConfigFileAndPassToAction.yml
+     uses: ./.github/workflows/executeTwoJobs.yml
      with: 
-       config_path: './.github/ci-configuration/ci.json'
+       config_path: './.github/ci-configuration/ci-two-jobs.json'
      secrets: inherit
   
 
