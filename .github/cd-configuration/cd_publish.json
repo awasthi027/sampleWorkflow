@@ -8,9 +8,9 @@
             }
         }
     ],
-    "build": [
+    "publish": [
         {
-            "name": "Pod Lib Lint",
+            "name": "Publish fastlane Call",
             "type": "fastlane",
             "fastlane": {
                 "lane": "printMessageLane",

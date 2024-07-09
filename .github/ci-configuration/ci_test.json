@@ -8,9 +8,9 @@
             }
         }
     ],
-    "build": [
+    "test": [
         {
-            "name": "Pod Lib Lint",
+            "name": "Test Fastlane",
             "type": "fastlane",
             "fastlane": {
                 "lane": "printMessageLane",

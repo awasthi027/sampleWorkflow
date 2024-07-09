@@ -17,7 +17,7 @@ on:
 jobs:
   build-iOS: 
      name: "Buidling iOS source code"
-     uses: ./.github/workflows/readConfigFileAndPassToAction.yml
+     uses: ./.github/workflows/readConfigFileAndPassToAction_build.yml
      with: 
        config_path: './.github/ci-configuration/ci.json'
      secrets: inherit
