@@ -1,4 +1,4 @@
-name: Execute Multiple Jobs
+name: Single Job Test Workflow
 
 on:
   workflow_call:
@@ -44,44 +44,29 @@ jobs:
         id: readjson
         uses: awasthi027/validate-workflow-config-action@v1
         with: 
-          config-path: './.github/ci-configuration/ci-two-jobs.json'
+          config-path: ${{ inputs.config_path }}
   build:
     runs-on: macos-latest
     needs: [prepare]
     strategy:
         fail-fast: false
         matrix: 
-          build: ${{ fromJson(needs.prepare.outputs.matrix).build }}
+          test: ${{ fromJson(needs.prepare.outputs.matrix).test }}
           common: ${{ fromJson(needs.prepare.outputs.matrix).common }}
 
     steps:
-      - name: '🧪 ${{ matrix.build.name }} [💻]'
+      - name: Checkout Project Repository
         uses: actions/checkout@main
         with:
           repository: ${{ inputs.repository }}
           ref: ${{ inputs.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: '🛠️ ${{ matrix.build.name }} [💻]'
-        if: ${{ matrix.build.type == 'fastlane' && !matrix.build.disabled }}
+      - name: '🧪 ${{ matrix.test.name }} [💻]'
         uses: awasthi027/fastlane-action@v4
         with:
-           working_repo: ${{ matrix.build.fastlane.working_repo }}
-           fastlane_repo: ${{ matrix.build.fastlane.fastlane_repo }}
-           lane_name: ${{ matrix.build.fastlane.lane  }}
-           env_name: ${{ matrix.build.fastlane.env  }}
+           working_repo: ${{ matrix.test.fastlane.working_repo }}
+           fastlane_repo: ${{ matrix.test.fastlane.fastlane_repo }}
+           lane_name: ${{ matrix.test.fastlane.lane  }}
+           env_name: ${{ matrix.test.fastlane.env  }}
            gitPATToken: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: '🛠️ ${{ matrix.build.name }} [💻]'
-        uses: awasthi027/fastlane-action@v5
-        if: ${{ matrix.build.type == 'script' && !matrix.build.disabled }}
-        with:
-           working_repo: ${{ matrix.build.fastlane.working_repo }}
-           fastlane_repo: ${{ matrix.build.fastlane.fastlane_repo }}
-           lane_name: ${{ matrix.build.fastlane.lane  }}
-           env_name: ${{ matrix.build.fastlane.env  }}
-           script_path: ${{ matrix.build.fastlane.pre_script }}
-           gitPATToken: ${{ secrets.GITHUB_TOKEN }}
-
-
-           
