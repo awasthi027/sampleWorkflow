@@ -1,0 +1,29 @@
+name: Create Tag
+
+env:
+    GITHUB_TOKEN: ${{secrets.PAT_GITHUB}}
+    COCOA_POD_TOKEN: ${{secrets.COCOAPODS_TRUNK_TOKEN}}
+    GITHUB_BUILD_NUMBER: ${{ github.run_number }}
+    GITHUB_BUILD_BRANCH: ${{ github.ref_name }}
+
+permissions:
+    contents: write  # To push a branch 
+
+on:
+  workflow_dispatch:
+
+jobs:
+  createTag: 
+    runs-on: macos-latest
+    steps:
+      - name: 'Checkout Code'
+        uses: actions/checkout@main
+        with:
+          repository: ${{ inputs.repository }}
+          ref: ${{ inputs.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+  
+      - name: 'Push tag'
+        run: |
+         git tag 1.0.0
+         git push origin 1.0.0
