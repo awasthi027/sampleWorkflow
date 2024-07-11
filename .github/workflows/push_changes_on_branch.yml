@@ -1,0 +1,55 @@
+name: Pushing Changes On Another Branch
+
+env:
+    GITHUB_TOKEN: ${{secrets.PAT_GITHUB}}
+    COCOA_POD_TOKEN: ${{secrets.COCOAPODS_TRUNK_TOKEN}}
+    GITHUB_BUILD_NUMBER: ${{ github.run_number }}
+    GITHUB_BUILD_BRANCH: ${{ github.ref_name }}
+
+permissions:
+    contents: write  # To push a branch 
+    pages: write  
+    pull-requests: write
+
+on:
+  workflow_dispatch:
+
+
+jobs:
+ newRepo: 
+    runs-on: macos-latest
+    steps:
+      - name: 'Checkout Code'
+        uses: actions/checkout@main
+        with:
+          repository: ${{ inputs.repository }}
+          ref: ${{ inputs.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Create directory 
+        run: |
+          mkdir project1
+
+      - name: Check Another Repo
+        uses: actions/checkout@main
+        with:
+          repository: awasthi027/ios-spec
+          ref: ${{ inputs.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: project1
+      - name: Push Commit 1
+        run: |
+          cd project1
+          # git config user.name "Automated User"
+          # git config user.email "actions@users.noreply.github.com"
+          echo "Last Log with username"
+          git log -a -1
+          touch sample1.txt 
+          git add .
+          git commit -m "Creating sample file"
+          git config --unset-all http.https://github.com/.extraheader
+          echo "Local commit username"
+          git log -a -1
+          #git push 
+        
+
