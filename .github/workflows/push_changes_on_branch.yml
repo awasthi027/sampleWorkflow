@@ -40,6 +40,33 @@ jobs:
       - name: Push Commit 1
         run: |
           cd project1
+
+          echo "Granting Github access for pod updating"
+
+          echo "================"
+          GLOBALCONFIG=~/.gitconfig
+
+          if [[ ! -e "$GLOBALCONFIG" ]]; then
+           echo "Git Global Configuration does not exist: creating empty file."
+           touch "$GLOBALCONFIG"
+          fi
+
+          echo "================"
+          echo "Global Git Configuration **before** Granting Access:"
+          git config --global --list
+
+          echo "================"
+          git config --global --add \
+          url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/awasthi027/ios-spec".insteadOf \
+          "https://github.com/awasthi027/ios-spec"
+
+          git config --global --add \
+          url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/awasthi027/ios-spec".insteadOf \
+          "git@github.com:awasthi027/ios-spec"
+
+          echo "======================"
+          echo "Global Git Configuration **after** Granting Access:"
+          git config --global --list
           # git config user.name "Automated User"
           # git config user.email "actions@users.noreply.github.com"
           echo "Last Log with username"
@@ -50,6 +77,6 @@ jobs:
           git config --unset-all http.https://github.com/.extraheader
           echo "Local commit username"
           git log -a -1
-          #git push 
+          git push 
         
 
